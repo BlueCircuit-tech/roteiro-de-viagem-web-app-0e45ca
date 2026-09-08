@@ -950,6 +950,234 @@ mapa_da_viagem_render();
   </script>
 </section>
 
+    <section data-tela="compartilhar-roteiro" class="hidden">
+  <style>
+    .cr-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px}
+    .cr-opt{border:1px solid #E2E8F0;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:flex-start;cursor:pointer;transition:.15s}
+    .cr-opt.ativo{border-color:#2563EB;background:#EFF4FF}
+    .cr-chip{font-size:11px;padding:3px 8px;border-radius:999px;background:#EFF4FF;color:#1E3A5F;font-weight:600}
+    .cr-btn{border-radius:12px;font-weight:600;font-size:14px;padding:12px 14px;width:100%}
+  </style>
+
+  <div class="px-4 pt-4 pb-28" style="background:#F8FAFC">
+
+    <div class="flex items-center gap-2 mb-4">
+      <button onclick="mostrarTela('detalhes-do-roteiro')" class="w-9 h-9 rounded-full border border-slate-200 bg-white grid place-items-center text-[#1E3A5F]" aria-label="Voltar">←</button>
+      <div>
+        <h1 class="text-[19px] font-semibold text-[#1E3A5F] leading-tight" style="font-family:'Fraunces',Georgia,serif">Compartilhar roteiro</h1>
+        <p class="text-[12px] text-slate-500">Escolha quem pode ver a sua viagem</p>
+      </div>
+    </div>
+
+    <div class="cr-card overflow-hidden mb-5">
+      <div class="h-24" style="background:linear-gradient(120deg,#1E3A5F,#2563EB)"></div>
+      <div class="p-4 -mt-10">
+        <div class="w-16 h-16 rounded-xl bg-white border border-slate-200 grid place-items-center text-2xl shadow-sm">🏔️</div>
+        <h2 class="mt-3 text-[16px] font-semibold text-[#1E3A5F]">Serra Gaúcha em Família</h2>
+        <p class="text-[12px] text-slate-500 mt-0.5">Gramado · Canela · Bento Gonçalves</p>
+        <div class="flex flex-wrap gap-1.5 mt-2">
+          <span class="cr-chip">12 a 18 de julho</span>
+          <span class="cr-chip">7 dias</span>
+          <span class="cr-chip">14 paradas</span>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button onclick="mostrarTela('mapa-da-viagem')" class="flex-1 text-[12px] font-semibold text-[#2563EB] border border-[#2563EB] rounded-lg py-2">Ver no mapa</button>
+          <button onclick="mostrarTela('fotos-e-documentos')" class="flex-1 text-[12px] font-semibold text-[#1E3A5F] border border-slate-200 rounded-lg py-2">Fotos e docs</button>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="text-[13px] font-semibold text-[#1E3A5F] mb-2">Privacidade</h3>
+    <div class="space-y-2 mb-3">
+      <div class="cr-opt" data-priv="privado" onclick="compartilhar_roteiro_priv('privado')">
+        <span class="text-lg">🔒</span>
+        <div class="flex-1">
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Privado</p>
+          <p class="text-[11.5px] text-slate-500">Só você e os convidados abaixo</p>
+        </div>
+        <span class="cr-radio w-4 h-4 rounded-full border-2 border-slate-300 mt-1"></span>
+      </div>
+      <div class="cr-opt ativo" data-priv="link" onclick="compartilhar_roteiro_priv('link')">
+        <span class="text-lg">🔗</span>
+        <div class="flex-1">
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Só com o link</p>
+          <p class="text-[11.5px] text-slate-500">Quem tiver o link consegue visualizar</p>
+        </div>
+        <span class="cr-radio w-4 h-4 rounded-full border-2 border-[#2563EB] mt-1"></span>
+      </div>
+      <div class="cr-opt" data-priv="publico" onclick="compartilhar_roteiro_priv('publico')">
+        <span class="text-lg">🌎</span>
+        <div class="flex-1">
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Público na comunidade</p>
+          <p class="text-[11.5px] text-slate-500">Aparece na busca de roteiros do app</p>
+        </div>
+        <span class="cr-radio w-4 h-4 rounded-full border-2 border-slate-300 mt-1"></span>
+      </div>
+    </div>
+
+    <div id="cr-aviso" class="text-[11.5px] rounded-lg px-3 py-2 mb-5 bg-[#EFF4FF] text-[#1E3A5F]">Link ativo · qualquer pessoa com o endereço pode visualizar, sem editar.</div>
+
+    <h3 class="text-[13px] font-semibold text-[#1E3A5F] mb-2">Link do roteiro</h3>
+    <div class="cr-card p-3 mb-2">
+      <p id="cr-link" class="text-[12px] text-slate-600 break-all">rotamia.app/r/serra-gaucha-familia-2f81</p>
+    </div>
+    <div class="flex gap-2 mb-5">
+      <button onclick="compartilhar_roteiro_copiar()" class="cr-btn text-white" style="background:#2563EB">Copiar link</button>
+      <button onclick="compartilhar_roteiro_novoLink()" class="cr-btn text-[#1E3A5F] bg-white border border-slate-200">Gerar novo</button>
+    </div>
+    <p id="cr-copiado" class="hidden text-[12px] text-emerald-600 font-semibold -mt-4 mb-5">✓ Link copiado para a área de transferência</p>
+
+    <div class="flex items-center justify-between mb-2">
+      <h3 class="text-[13px] font-semibold text-[#1E3A5F]">Convidados</h3>
+      <span id="cr-contador" class="text-[11.5px] text-slate-500">4 pessoas</span>
+    </div>
+
+    <div id="cr-lista" class="space-y-2 mb-4"></div>
+
+    <div class="cr-card p-3 mb-5">
+      <p class="text-[12px] font-semibold text-[#1E3A5F] mb-2">Convidar por e-mail</p>
+      <input id="cr-email" type="email" placeholder="ex.: mariana.souza@gmail.com" class="w-full text-[13px] border border-slate-200 rounded-lg px-3 py-2.5 outline-none focus:border-[#2563EB]">
+      <div class="flex gap-2 mt-2">
+        <select id="cr-perm" class="text-[12.5px] border border-slate-200 rounded-lg px-2 py-2.5 text-[#1E3A5F] bg-white">
+          <option value="Visualizar">Visualizar</option>
+          <option value="Editar">Editar</option>
+        </select>
+        <button onclick="compartilhar_roteiro_convidar()" class="flex-1 cr-btn text-white" style="background:#1E3A5F">Enviar convite</button>
+      </div>
+      <p id="cr-erro" class="hidden text-[11.5px] text-red-500 mt-2">Digite um e-mail válido para convidar.</p>
+    </div>
+
+    <h3 class="text-[13px] font-semibold text-[#1E3A5F] mb-2">Compartilhar em</h3>
+    <div class="grid grid-cols-3 gap-2 mb-5">
+      <a href="https://wa.me/?text=Olha%20meu%20roteiro%20na%20Serra%20Ga%C3%BAcha%3A%20https%3A%2F%2Frotamia.app%2Fr%2Fserra-gaucha-familia-2f81" target="_blank" rel="noopener" class="cr-card py-3 grid place-items-center gap-1 text-[11.5px] text-[#1E3A5F] font-medium"><span class="text-lg">💬</span>WhatsApp</a>
+      <a href="https://telegram.me/share/url?url=https%3A%2F%2Frotamia.app%2Fr%2Fserra-gaucha-familia-2f81&text=Meu%20roteiro%20na%20Serra%20Ga%C3%BAcha" target="_blank" rel="noopener" class="cr-card py-3 grid place-items-center gap-1 text-[11.5px] text-[#1E3A5F] font-medium"><span class="text-lg">✈️</span>Telegram</a>
+      <a href="mailto:?subject=Roteiro%20Serra%20Ga%C3%BAcha%20em%20Fam%C3%ADlia&body=https%3A%2F%2Frotamia.app%2Fr%2Fserra-gaucha-familia-2f81" class="cr-card py-3 grid place-items-center gap-1 text-[11.5px] text-[#1E3A5F] font-medium"><span class="text-lg">✉️</span>E-mail</a>
+    </div>
+
+    <div class="cr-card p-4 mb-4">
+      <div class="flex items-start gap-3">
+        <span class="text-xl">📄</span>
+        <div class="flex-1">
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Exportar em PDF</p>
+          <p class="text-[11.5px] text-slate-500 mt-0.5">Roteiro dia a dia, endereços e reservas para levar impresso.</p>
+        </div>
+      </div>
+      <label class="flex items-center gap-2 mt-3 text-[12px] text-slate-600">
+        <input id="cr-incluir-fotos" type="checkbox" checked class="accent-[#2563EB] w-4 h-4" onchange="compartilhar_roteiro_pdfInfo()">
+        Incluir fotos e comprovantes
+      </label>
+      <p id="cr-pdf-info" class="text-[11.5px] text-slate-500 mt-2">Estimativa: 9 páginas · 4,2 MB</p>
+      <button onclick="compartilhar_roteiro_pdf()" class="cr-btn mt-3 text-white" style="background:#1E3A5F">Gerar PDF do roteiro</button>
+      <div id="cr-pdf-ok" class="hidden mt-2 text-[12px] text-emerald-600 font-semibold">✓ roteiro-serra-gaucha.pdf pronto — salvo em Fotos e Documentos.</div>
+      <button id="cr-pdf-ir" onclick="mostrarTela('fotos-e-documentos')" class="hidden mt-2 text-[12px] font-semibold text-[#2563EB] underline">Abrir em Fotos e Documentos</button>
+    </div>
+
+    <button onclick="compartilhar_roteiro_salvar()" class="cr-btn text-white mb-2" style="background:#2563EB">Salvar e voltar ao roteiro</button>
+    <button onclick="mostrarTela('meus-roteiros')" class="cr-btn bg-white border border-slate-200 text-[#1E3A5F]">Ir para Meus Roteiros</button>
+  </div>
+
+  <script>
+    var compartilhar_roteiro_dados = {
+      priv: 'link',
+      convidados: [
+        {n:'Mariana Souza', e:'mariana.souza@gmail.com', p:'Editar', s:'Aceitou'},
+        {n:'Rafael Lima', e:'rafael.lima@outlook.com', p:'Visualizar', s:'Aceitou'},
+        {n:'Dona Cleusa Prado', e:'cleusa.prado@uol.com.br', p:'Visualizar', s:'Convite enviado'},
+        {n:'Thiago Bertolo', e:'thiago.bertolo@gmail.com', p:'Editar', s:'Aceitou'}
+      ]
+    };
+
+    function compartilhar_roteiro_render(){
+      var l = document.getElementById('cr-lista');
+      l.innerHTML = compartilhar_roteiro_dados.convidados.map(function(c,i){
+        var ini = c.n.split(' ').map(function(x){return x[0]}).slice(0,2).join('');
+        var cor = c.s === 'Aceitou' ? 'text-emerald-600' : 'text-amber-600';
+        return '<div class="cr-card p-3 flex items-center gap-3">'+
+          '<div class="w-9 h-9 rounded-full grid place-items-center text-[12px] font-bold text-white shrink-0" style="background:#1E3A5F">'+ini+'</div>'+
+          '<div class="flex-1 min-w-0">'+
+            '<p class="text-[13px] font-semibold text-[#1E3A5F] truncate">'+c.n+'</p>'+
+            '<p class="text-[11px] text-slate-500 truncate">'+c.e+'</p>'+
+            '<p class="text-[10.5px] '+cor+' font-semibold mt-0.5">'+c.s+'</p>'+
+          '</div>'+
+          '<div class="flex flex-col items-end gap-1">'+
+            '<button onclick="compartilhar_roteiro_troca('+i+')" class="cr-chip">'+c.p+' ⇄</button>'+
+            '<button onclick="compartilhar_roteiro_remove('+i+')" class="text-[10.5px] text-slate-400">remover</button>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+      document.getElementById('cr-contador').textContent = compartilhar_roteiro_dados.convidados.length + ' pessoas';
+    }
+
+    function compartilhar_roteiro_troca(i){
+      var c = compartilhar_roteiro_dados.convidados[i];
+      c.p = c.p === 'Editar' ? 'Visualizar' : 'Editar';
+      compartilhar_roteiro_render();
+    }
+
+    function compartilhar_roteiro_remove(i){
+      compartilhar_roteiro_dados.convidados.splice(i,1);
+      compartilhar_roteiro_render();
+    }
+
+    function compartilhar_roteiro_priv(v){
+      compartilhar_roteiro_dados.priv = v;
+      document.querySelectorAll('[data-priv]').forEach(function(el){
+        var on = el.getAttribute('data-priv') === v;
+        el.classList.toggle('ativo', on);
+        var r = el.querySelector('.cr-radio');
+        r.className = 'cr-radio w-4 h-4 rounded-full border-2 mt-1 ' + (on ? 'border-[#2563EB] bg-[#2563EB]' : 'border-slate-300');
+      });
+      var a = document.getElementById('cr-aviso');
+      if(v === 'privado'){ a.textContent = 'Link desativado · apenas os convidados da lista abaixo têm acesso.'; a.className='text-[11.5px] rounded-lg px-3 py-2 mb-5 bg-slate-100 text-slate-600'; }
+      else if(v === 'link'){ a.textContent = 'Link ativo · qualquer pessoa com o endereço pode visualizar, sem editar.'; a.className='text-[11.5px] rounded-lg px-3 py-2 mb-5 bg-[#EFF4FF] text-[#1E3A5F]'; }
+      else { a.textContent = 'Público · o roteiro entra na comunidade e pode ser copiado por outros viajantes.'; a.className='text-[11.5px] rounded-lg px-3 py-2 mb-5 bg-[#1E3A5F] text-white'; }
+    }
+
+    function compartilhar_roteiro_copiar(){
+      var msg = document.getElementById('cr-copiado');
+      msg.classList.remove('hidden');
+      setTimeout(function(){ msg.classList.add('hidden'); }, 2500);
+    }
+
+    function compartilhar_roteiro_novoLink(){
+      var s = Math.random().toString(36).slice(2,6);
+      document.getElementById('cr-link').textContent = 'rotamia.app/r/serra-gaucha-familia-' + s;
+      var a = document.getElementById('cr-aviso');
+      a.textContent = 'Novo link gerado · o endereço anterior deixou de funcionar.';
+      a.className = 'text-[11.5px] rounded-lg px-3 py-2 mb-5 bg-amber-50 text-amber-700';
+    }
+
+    function compartilhar_roteiro_convidar(){
+      var i = document.getElementById('cr-email');
+      var e = i.value.trim();
+      var err = document.getElementById('cr-erro');
+      if(e.indexOf('@') < 1 || e.indexOf('.') < 3){ err.classList.remove('hidden'); return; }
+      err.classList.add('hidden');
+      var nome = e.split('@')[0].replace(/[._]/g,' ').replace(/\b\w/g, function(m){return m.toUpperCase()});
+      compartilhar_roteiro_dados.convidados.push({n:nome, e:e, p:document.getElementById('cr-perm').value, s:'Convite enviado'});
+      i.value = '';
+      compartilhar_roteiro_render();
+    }
+
+    function compartilhar_roteiro_pdfInfo(){
+      var f = document.getElementById('cr-incluir-fotos').checked;
+      document.getElementById('cr-pdf-info').textContent = f ? 'Estimativa: 9 páginas · 4,2 MB' : 'Estimativa: 5 páginas · 380 KB';
+    }
+
+    function compartilhar_roteiro_pdf(){
+      document.getElementById('cr-pdf-ok').classList.remove('hidden');
+      document.getElementById('cr-pdf-ir').classList.remove('hidden');
+    }
+
+    function compartilhar_roteiro_salvar(){
+      mostrarTela('detalhes-do-roteiro');
+    }
+
+    compartilhar_roteiro_render();
+    compartilhar_roteiro_priv('link');
+  </script>
+</section>
+
     <!-- TELAS -->
   </main>
 
