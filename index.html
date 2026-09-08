@@ -87,6 +87,214 @@ tailwind.config = {
 <div id="aparelho" class="relative mx-auto w-full max-w-[430px] min-h-screen shadow-[0_0_60px_-20px_rgba(30,58,95,.35)]">
 
   <main class="min-h-screen">
+    <section data-tela="meus-roteiros" class="hidden">
+  <style>
+    .mr-chip{font-size:11px;letter-spacing:.02em;padding:3px 9px;border-radius:999px;font-weight:600}
+    .mr-card{border:1px solid #E2E8F0;border-radius:18px;background:#fff;overflow:hidden}
+    .mr-cap{height:96px;width:96px;flex:none;background-size:cover;background-position:center}
+    .mr-filtro{font-size:12px;font-weight:600;padding:6px 14px;border-radius:999px;border:1px solid #E2E8F0;color:#64748B;background:#fff;white-space:nowrap}
+    .mr-filtro[data-on="1"]{background:#1E3A5F;border-color:#1E3A5F;color:#F8FAFC}
+  </style>
+
+  <div class="px-5 pt-5 pb-2">
+    <p class="text-[13px] text-slate-500">Boa tarde, viajante</p>
+    <h1 class="text-[26px] leading-tight font-semibold text-[#1E3A5F]" style="font-family:'DM Serif Display',Georgia,serif">Marina Bittencourt</h1>
+    <p class="mt-1 text-[12px] text-slate-500">Você tem <span class="font-semibold text-[#2563EB]">4 roteiros</span> salvos · 2 países em 2025</p>
+  </div>
+
+  <div class="px-5 mt-3">
+    <button onclick="mostrarTela('detalhes-do-roteiro')" class="w-full text-left rounded-[22px] overflow-hidden shadow-[0_10px_30px_-12px_rgba(30,58,95,.55)]">
+      <div class="relative h-[188px] bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=800&q=60')">
+        <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(30,58,95,.15) 0%,rgba(30,58,95,.88) 78%)"></div>
+        <div class="absolute top-3 left-3 mr-chip bg-[#F8FAFC]/95 text-[#1E3A5F]">PRÓXIMA VIAGEM</div>
+        <div class="absolute top-3 right-3 flex items-center gap-1 mr-chip bg-[#2563EB] text-white">
+          <span id="mr-cd">18</span> dias
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 text-[#F8FAFC]">
+          <p class="text-[11px] uppercase tracking-[.14em] text-white/70">Chile · América do Sul</p>
+          <p class="text-[22px] font-semibold leading-tight" style="font-family:'DM Serif Display',Georgia,serif">Santiago &amp; Valle Nevado</p>
+          <div class="mt-2 flex items-center justify-between">
+            <p class="text-[12px] text-white/85">14 a 21 de agosto · 8 dias</p>
+            <span class="text-[12px] font-semibold bg-white/15 px-3 py-1 rounded-full">Ver dia a dia →</span>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <div class="px-5 mt-4 grid grid-cols-3 gap-2">
+    <button onclick="mostrarTela('mapa-da-viagem')" class="mr-card py-3 flex flex-col items-center gap-1">
+      <span class="text-lg">🗺️</span><span class="text-[11px] font-semibold text-[#1E3A5F]">Mapa</span>
+    </button>
+    <button onclick="mostrarTela('fotos-e-documentos')" class="mr-card py-3 flex flex-col items-center gap-1">
+      <span class="text-lg">🛂</span><span class="text-[11px] font-semibold text-[#1E3A5F]">Documentos</span>
+    </button>
+    <button onclick="mostrarTela('compartilhar-roteiro')" class="mr-card py-3 flex flex-col items-center gap-1">
+      <span class="text-lg">✈️</span><span class="text-[11px] font-semibold text-[#1E3A5F]">Compartilhar</span>
+    </button>
+  </div>
+
+  <div class="px-5 mt-6 flex items-end justify-between">
+    <h2 class="text-[15px] font-semibold text-[#1E3A5F]">Meus roteiros</h2>
+    <span id="mr-contador" class="text-[11px] text-slate-500">4 de 4</span>
+  </div>
+
+  <div class="mt-3 flex gap-2 overflow-x-auto px-5 pb-1" style="scrollbar-width:none">
+    <button class="mr-filtro" data-on="1" data-f="todos" onclick="meus_roteiros_filtrar('todos')">Todos</button>
+    <button class="mr-filtro" data-f="planejado" onclick="meus_roteiros_filtrar('planejado')">Planejados</button>
+    <button class="mr-filtro" data-f="andamento" onclick="meus_roteiros_filtrar('andamento')">Em andamento</button>
+    <button class="mr-filtro" data-f="concluido" onclick="meus_roteiros_filtrar('concluido')">Concluídos</button>
+  </div>
+
+  <div id="mr-lista" class="px-5 mt-3 space-y-3 pb-40">
+
+    <div class="mr-card flex" data-status="andamento">
+      <div class="mr-cap" style="background-image:url('https://images.unsplash.com/photo-1544989164-31dc3c645987?w=400&q=60')"></div>
+      <button onclick="mostrarTela('detalhes-do-roteiro')" class="flex-1 text-left p-3">
+        <div class="flex items-start justify-between gap-2">
+          <p class="text-[14px] font-semibold text-[#1E3A5F] leading-snug">Lençóis Maranhenses</p>
+          <span class="mr-chip bg-[#2563EB]/10 text-[#2563EB]">Em andamento</span>
+        </div>
+        <p class="text-[11.5px] text-slate-500 mt-1">Barreirinhas, MA · 22 a 27 de julho</p>
+        <div class="mt-2 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div class="h-full w-[60%] bg-[#2563EB] rounded-full"></div>
+        </div>
+        <p class="text-[10.5px] text-slate-400 mt-1">Dia 3 de 5 · Circuito Lagoa Azul</p>
+      </button>
+    </div>
+
+    <div class="mr-card flex" data-status="planejado">
+      <div class="mr-cap" style="background-image:url('https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=400&q=60')"></div>
+      <button onclick="mostrarTela('detalhes-do-roteiro')" class="flex-1 text-left p-3">
+        <div class="flex items-start justify-between gap-2">
+          <p class="text-[14px] font-semibold text-[#1E3A5F] leading-snug">Santiago &amp; Valle Nevado</p>
+          <span class="mr-chip bg-amber-100 text-amber-700">Planejado</span>
+        </div>
+        <p class="text-[11.5px] text-slate-500 mt-1">Chile · 14 a 21 de agosto</p>
+        <p class="text-[10.5px] text-slate-400 mt-2">12 atividades · 3 reservas confirmadas</p>
+        <p class="text-[10.5px] text-slate-400">Com Rafael Bittencourt e +2</p>
+      </button>
+    </div>
+
+    <div class="mr-card flex" data-status="planejado">
+      <div class="mr-cap" style="background-image:url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=400&q=60')"></div>
+      <button onclick="mostrarTela('detalhes-do-roteiro')" class="flex-1 text-left p-3">
+        <div class="flex items-start justify-between gap-2">
+          <p class="text-[14px] font-semibold text-[#1E3A5F] leading-snug">Toscana de carro</p>
+          <span class="mr-chip bg-amber-100 text-amber-700">Planejado</span>
+        </div>
+        <p class="text-[11.5px] text-slate-500 mt-1">Itália · 3 a 15 de outubro</p>
+        <p class="text-[10.5px] text-slate-400 mt-2">Rascunho · 4 dias sem atividades</p>
+        <p class="text-[10.5px] text-[#2563EB] font-semibold mt-1">Continuar planejamento →</p>
+      </button>
+    </div>
+
+    <div class="mr-card flex" data-status="concluido">
+      <div class="mr-cap grayscale" style="background-image:url('https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&q=60')"></div>
+      <button onclick="mostrarTela('detalhes-do-roteiro')" class="flex-1 text-left p-3">
+        <div class="flex items-start justify-between gap-2">
+          <p class="text-[14px] font-semibold text-[#1E3A5F] leading-snug">Serra Gaúcha em família</p>
+          <span class="mr-chip bg-slate-100 text-slate-500">Concluído</span>
+        </div>
+        <p class="text-[11.5px] text-slate-500 mt-1">Gramado, RS · 12 a 17 de abril</p>
+        <p class="text-[10.5px] text-slate-400 mt-2">184 fotos · 6 documentos guardados</p>
+      </button>
+    </div>
+
+    <p id="mr-vazio" class="hidden text-center text-[12.5px] text-slate-400 py-10">Nenhum roteiro com esse status.</p>
+  </div>
+
+  <div class="fixed bottom-24 left-0 right-0 z-30 pointer-events-none">
+    <div class="mx-auto max-w-[430px] px-5 flex justify-end">
+      <button onclick="meus_roteiros_abrirNovo()" class="pointer-events-auto flex items-center gap-2 bg-[#2563EB] text-white text-[13px] font-semibold pl-4 pr-5 py-3 rounded-full shadow-[0_12px_24px_-8px_rgba(37,99,235,.8)]">
+        <span class="text-lg leading-none">+</span> Novo roteiro
+      </button>
+    </div>
+  </div>
+
+  <div id="mr-modal" class="hidden fixed inset-0 z-40">
+    <div class="absolute inset-0 bg-[#1E3A5F]/50" onclick="meus_roteiros_fecharNovo()"></div>
+    <div class="absolute bottom-0 left-0 right-0 mx-auto max-w-[430px] bg-[#F8FAFC] rounded-t-[24px] p-5">
+      <div class="w-10 h-1 bg-slate-300 rounded-full mx-auto mb-4"></div>
+      <h3 class="text-[17px] font-semibold text-[#1E3A5F]">Criar novo roteiro</h3>
+      <label class="block text-[11px] font-semibold text-slate-500 mt-4 mb-1">DESTINO</label>
+      <input id="mr-destino" type="text" placeholder="Ex.: Lisboa, Portugal" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 text-[14px] text-[#1E3A5F] outline-none focus:border-[#2563EB]">
+      <div class="flex gap-2 mt-2">
+        <button onclick="meus_roteiros_sugerir('Lisboa, Portugal')" class="mr-filtro">Lisboa</button>
+        <button onclick="meus_roteiros_sugerir('Fernando de Noronha, PE')" class="mr-filtro">Noronha</button>
+        <button onclick="meus_roteiros_sugerir('Buenos Aires, AR')" class="mr-filtro">Buenos Aires</button>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mt-4">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-500 mb-1">IDA</label>
+          <input id="mr-ida" type="date" value="2025-11-08" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 text-[13px] text-[#1E3A5F] outline-none focus:border-[#2563EB]">
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-500 mb-1">VOLTA</label>
+          <input id="mr-volta" type="date" value="2025-11-15" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-3 text-[13px] text-[#1E3A5F] outline-none focus:border-[#2563EB]">
+        </div>
+      </div>
+      <p id="mr-resumo" class="text-[12px] text-slate-500 mt-3">Selecione um destino para continuar.</p>
+      <button onclick="meus_roteiros_criar()" class="w-full mt-4 bg-[#1E3A5F] text-[#F8FAFC] font-semibold text-[14px] py-3.5 rounded-xl">Criar e montar dia a dia</button>
+      <button onclick="meus_roteiros_fecharNovo()" class="w-full mt-2 text-[13px] text-slate-500 py-2">Cancelar</button>
+    </div>
+  </div>
+
+  <script>
+    function meus_roteiros_filtrar(f){
+      document.querySelectorAll('[data-tela="meus-roteiros"] .mr-filtro[data-f]').forEach(b=>{
+        b.dataset.on = b.dataset.f===f ? '1' : '';
+      });
+      const itens = document.querySelectorAll('#mr-lista [data-status]');
+      let n=0;
+      itens.forEach(el=>{
+        const ok = f==='todos' || el.dataset.status===f;
+        el.classList.toggle('hidden',!ok);
+        if(ok) n++;
+      });
+      document.getElementById('mr-vazio').classList.toggle('hidden', n>0);
+      document.getElementById('mr-contador').textContent = n+' de '+itens.length;
+    }
+    function meus_roteiros_abrirNovo(){ document.getElementById('mr-modal').classList.remove('hidden'); meus_roteiros_resumo(); }
+    function meus_roteiros_fecharNovo(){ document.getElementById('mr-modal').classList.add('hidden'); }
+    function meus_roteiros_sugerir(d){ document.getElementById('mr-destino').value=d; meus_roteiros_resumo(); }
+    function meus_roteiros_resumo(){
+      const d=document.getElementById('mr-destino').value.trim();
+      const i=document.getElementById('mr-ida').value, v=document.getElementById('mr-volta').value;
+      const el=document.getElementById('mr-resumo');
+      if(!d){ el.textContent='Selecione um destino para continuar.'; return; }
+      let dias='';
+      if(i&&v){ const t=Math.round((new Date(v)-new Date(i))/86400000); if(t>0) dias=' · '+(t+1)+' dias'; }
+      el.innerHTML='Roteiro para <span class="font-semibold text-[#1E3A5F]">'+d+'</span>'+dias;
+    }
+    function meus_roteiros_criar(){
+      const d=document.getElementById('mr-destino').value.trim();
+      if(!d){ document.getElementById('mr-resumo').innerHTML='<span class="text-[#2563EB] font-semibold">Informe o destino primeiro.</span>'; return; }
+      const i=document.getElementById('mr-ida').value.split('-'), v=document.getElementById('mr-volta').value.split('-');
+      const per=(i[2]&&v[2])?(i[2]+'/'+i[1]+' a '+v[2]+'/'+v[1]):'datas a definir';
+      const card=document.createElement('div');
+      card.className='mr-card flex';
+      card.dataset.status='planejado';
+      card.innerHTML='<div class="mr-cap bg-[#1E3A5F] flex items-center justify-center text-2xl">🧭</div>'+
+        '<button onclick="mostrarTela(\'detalhes-do-roteiro\')" class="flex-1 text-left p-3">'+
+        '<div class="flex items-start justify-between gap-2"><p class="text-[14px] font-semibold text-[#1E3A5F] leading-snug">'+d+'</p>'+
+        '<span class="mr-chip bg-amber-100 text-amber-700">Planejado</span></div>'+
+        '<p class="text-[11.5px] text-slate-500 mt-1">'+per+'</p>'+
+        '<p class="text-[10.5px] text-[#2563EB] font-semibold mt-2">Roteiro criado agora · adicionar atividades →</p></button>';
+      const lista=document.getElementById('mr-lista');
+      lista.insertBefore(card, lista.firstElementChild);
+      meus_roteiros_fecharNovo();
+      meus_roteiros_filtrar('todos');
+      mostrarTela('detalhes-do-roteiro');
+    }
+    ['mr-destino','mr-ida','mr-volta'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.addEventListener('input', meus_roteiros_resumo);
+    });
+    meus_roteiros_filtrar('todos');
+  </script>
+</section>
+
     <!-- TELAS -->
   </main>
 
