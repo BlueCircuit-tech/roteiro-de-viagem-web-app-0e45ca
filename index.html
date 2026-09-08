@@ -1178,6 +1178,230 @@ mapa_da_viagem_render();
   </script>
 </section>
 
+    <section data-tela="perfil-do-viajante" class="hidden">
+  <style>
+    .pv-card{background:#fff;border:1px solid #E2E8F0;border-radius:14px}
+    .pv-chip{border:1px solid #DBE3EF;border-radius:999px;padding:.3rem .7rem;font-size:.75rem;color:#1E3A5F;background:#F8FAFC}
+    .pv-num{font-family:'Fraunces',Georgia,serif;color:#1E3A5F;font-weight:600}
+    .pv-lbl{font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:#7C8DA6}
+    .pv-row{display:flex;align-items:center;gap:.75rem;width:100%;padding:.85rem .9rem;text-align:left}
+  </style>
+
+  <div class="px-4 pt-5 pb-24">
+
+    <div class="pv-card p-4">
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-xl font-semibold" style="background:#1E3A5F">MC</div>
+          <button onclick="perfil_do_viajante_trocarFoto()" class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full text-white text-xs flex items-center justify-center border-2 border-white" style="background:#2563EB" aria-label="Trocar foto">✎</button>
+        </div>
+        <div class="min-w-0">
+          <p class="pv-num text-lg leading-tight">Mariana Castilho</p>
+          <p class="text-xs text-slate-500 mt-0.5">Curitiba, PR · viajando desde 2016</p>
+          <p id="pv-foto-msg" class="hidden text-[11px] mt-1" style="color:#2563EB">Foto atualizada agora</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-slate-100 text-center">
+        <button onclick="mostrarTela('meus-roteiros')" class="py-1">
+          <p class="pv-num text-xl">14</p><p class="pv-lbl mt-0.5">Roteiros</p>
+        </button>
+        <button onclick="mostrarTela('mapa-da-viagem')" class="py-1 border-x border-slate-100">
+          <p class="pv-num text-xl">173</p><p class="pv-lbl mt-0.5">Dias</p>
+        </button>
+        <button onclick="mostrarTela('fotos-e-documentos')" class="py-1">
+          <p class="pv-num text-xl">1.248</p><p class="pv-lbl mt-0.5">Fotos</p>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between mt-6 mb-2">
+      <p class="pv-lbl">Países visitados · <span id="pv-paises-total">9</span></p>
+      <button onclick="mostrarTela('mapa-da-viagem')" class="text-xs font-medium" style="color:#2563EB">Ver no mapa</button>
+    </div>
+    <div id="pv-paises" class="flex flex-wrap gap-2"></div>
+
+    <div class="flex items-center justify-between mt-6 mb-2">
+      <p class="pv-lbl">Viagens realizadas</p>
+      <div class="flex gap-1" id="pv-filtros"></div>
+    </div>
+    <div id="pv-historico" class="space-y-2"></div>
+
+    <div id="pv-detalhe" class="hidden mt-3 pv-card p-4">
+      <p class="pv-lbl">Resumo da viagem</p>
+      <p id="pv-det-titulo" class="pv-num text-base mt-1"></p>
+      <p id="pv-det-texto" class="text-xs text-slate-600 mt-2 leading-relaxed"></p>
+      <div class="flex gap-2 mt-3">
+        <button onclick="mostrarTela('detalhes-do-roteiro')" class="flex-1 text-xs font-medium text-white rounded-lg py-2.5" style="background:#1E3A5F">Abrir roteiro</button>
+        <button onclick="mostrarTela('fotos-e-documentos')" class="flex-1 text-xs font-medium rounded-lg py-2.5 border" style="border-color:#DBE3EF;color:#1E3A5F">Ver álbum</button>
+      </div>
+    </div>
+
+    <p class="pv-lbl mt-6 mb-2">Acessos rápidos</p>
+    <div class="pv-card divide-y divide-slate-100 overflow-hidden">
+      <div class="pv-row">
+        <span class="text-lg">🔔</span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-[#1E3A5F] font-medium">Lembretes de viagem</p>
+          <p id="pv-notif-sub" class="text-[11px] text-slate-500">Check-in, embarque e reservas</p>
+        </div>
+        <button id="pv-notif" onclick="perfil_do_viajante_toggle('notif')" class="w-11 h-6 rounded-full relative transition-colors" style="background:#2563EB">
+          <span class="absolute top-0.5 w-5 h-5 bg-white rounded-full transition-all" style="left:22px"></span>
+        </button>
+      </div>
+      <div class="pv-row">
+        <span class="text-lg">🔄</span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-[#1E3A5F] font-medium">Sincronizar web e app</p>
+          <p id="pv-sync-sub" class="text-[11px] text-slate-500">Última sincronia: hoje, 08:42</p>
+        </div>
+        <button onclick="perfil_do_viajante_sincronizar()" id="pv-sync-btn" class="text-xs font-medium px-3 py-1.5 rounded-lg border" style="border-color:#DBE3EF;color:#2563EB">Agora</button>
+      </div>
+      <button onclick="mostrarTela('fotos-e-documentos')" class="pv-row">
+        <span class="text-lg">📄</span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-[#1E3A5F] font-medium">Passaporte e documentos</p>
+          <p class="text-[11px] text-slate-500">Passaporte vence em 03/2029</p>
+        </div>
+        <span class="text-slate-300 text-sm">›</span>
+      </button>
+      <button onclick="mostrarTela('compartilhar-roteiro')" class="pv-row">
+        <span class="text-lg">👥</span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-[#1E3A5F] font-medium">Companheiros de viagem</p>
+          <p class="text-[11px] text-slate-500">3 pessoas com acesso aos roteiros</p>
+        </div>
+        <span class="text-slate-300 text-sm">›</span>
+      </button>
+      <button onclick="perfil_do_viajante_conta()" class="pv-row">
+        <span class="text-lg">⚙️</span>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm text-[#1E3A5F] font-medium">Configurações da conta</p>
+          <p class="text-[11px] text-slate-500">mariana.castilho@gmail.com</p>
+        </div>
+        <span id="pv-conta-seta" class="text-slate-300 text-sm">›</span>
+      </button>
+      <div id="pv-conta" class="hidden px-4 py-3 space-y-3" style="background:#F8FAFC">
+        <div>
+          <label class="pv-lbl">Nome de exibição</label>
+          <input id="pv-in-nome" value="Mariana Castilho" class="w-full mt-1 text-sm px-3 py-2 rounded-lg border border-slate-200 bg-white text-[#1E3A5F] outline-none focus:border-[#2563EB]">
+        </div>
+        <div>
+          <label class="pv-lbl">Moeda dos orçamentos</label>
+          <select id="pv-in-moeda" class="w-full mt-1 text-sm px-3 py-2 rounded-lg border border-slate-200 bg-white text-[#1E3A5F] outline-none focus:border-[#2563EB]">
+            <option>Real (R$)</option><option>Euro (€)</option><option>Dólar (US$)</option>
+          </select>
+        </div>
+        <button onclick="perfil_do_viajante_salvar()" class="w-full text-xs font-medium text-white rounded-lg py-2.5" style="background:#2563EB">Salvar alterações</button>
+        <p id="pv-salvo" class="hidden text-[11px] text-center" style="color:#1E3A5F"></p>
+      </div>
+    </div>
+
+    <button onclick="mostrarTela('meus-roteiros')" class="w-full mt-5 text-sm font-medium text-white rounded-xl py-3.5" style="background:#1E3A5F">Planejar próxima viagem</button>
+  </div>
+
+  <script>
+    const perfil_do_viajante_paises = ["🇵🇹 Portugal","🇦🇷 Argentina","🇨🇱 Chile","🇮🇹 Itália","🇪🇸 Espanha","🇺🇾 Uruguai","🇫🇷 França","🇯🇵 Japão","🇵🇪 Peru"];
+    const perfil_do_viajante_viagens = [
+      {id:1,t:"Lisboa e Porto",d:"Set 2024 · 11 dias",p:"🇵🇹",a:2024,f:"214 fotos",r:"Roteiro com Sintra, Douro e Belém. Hospedagem no Bairro Alto e trem regional até o Porto. Gasto médio de R$ 640/dia."},
+      {id:2,t:"Bariloche na neve",d:"Jul 2024 · 6 dias",p:"🇦🇷",a:2024,f:"98 fotos",r:"Cerro Catedral, Circuito Chico e travessia até Villa La Angostura. Aluguel de carro pela Ruta 40."},
+      {id:3,t:"Toscana de carro",d:"Mai 2023 · 9 dias",p:"🇮🇹",a:2023,f:"330 fotos",r:"Florença, Siena, San Gimignano e Val d'Orcia. Degustação em vinícola de Montalcino reservada pelo app."},
+      {id:4,t:"Cusco e Machu Picchu",d:"Out 2023 · 7 dias",p:"🇵🇪",a:2023,f:"187 fotos",r:"Vale Sagrado, trem Vistadome e dois dias de aclimatação em Cusco antes da subida."},
+      {id:5,t:"Colônia do Sacramento",d:"Fev 2022 · 4 dias",p:"🇺🇾",a:2022,f:"62 fotos",r:"Bate-volta de Buenos Aires por Buquebus, centro histórico e Rambla ao pôr do sol."}
+    ];
+    let perfil_do_viajante_filtro = "Todas";
+    let perfil_do_viajante_aberto = null;
+
+    function perfil_do_viajante_render(){
+      document.getElementById('pv-paises').innerHTML = perfil_do_viajante_paises
+        .map(p=>`<button onclick="mostrarTela('mapa-da-viagem')" class="pv-chip">${p}</button>`).join('');
+      document.getElementById('pv-paises-total').textContent = perfil_do_viajante_paises.length;
+
+      const anos = ["Todas","2024","2023","2022"];
+      document.getElementById('pv-filtros').innerHTML = anos.map(a=>{
+        const on = a===perfil_do_viajante_filtro;
+        return `<button onclick="perfil_do_viajante_filtrar('${a}')" class="text-[11px] px-2.5 py-1 rounded-full border" style="${on?'background:#1E3A5F;color:#fff;border-color:#1E3A5F':'border-color:#DBE3EF;color:#7C8DA6'}">${a}</button>`;
+      }).join('');
+
+      const lista = perfil_do_viajante_viagens.filter(v=>perfil_do_viajante_filtro==="Todas"||String(v.a)===perfil_do_viajante_filtro);
+      document.getElementById('pv-historico').innerHTML = lista.map(v=>{
+        const sel = perfil_do_viajante_aberto===v.id;
+        return `<button onclick="perfil_do_viajante_abrir(${v.id})" class="pv-card pv-row" style="${sel?'border-color:#2563EB':''}">
+          <span class="w-9 h-9 rounded-lg flex items-center justify-center text-base" style="background:#F8FAFC">${v.p}</span>
+          <span class="flex-1 min-w-0">
+            <span class="block text-sm font-medium text-[#1E3A5F] truncate">${v.t}</span>
+            <span class="block text-[11px] text-slate-500">${v.d} · ${v.f}</span>
+          </span>
+          <span class="text-slate-300 text-sm">${sel?'▾':'›'}</span>
+        </button>`;
+      }).join('') || `<p class="text-xs text-slate-400 py-4 text-center">Nenhuma viagem neste ano.</p>`;
+    }
+
+    function perfil_do_viajante_filtrar(a){
+      perfil_do_viajante_filtro=a; perfil_do_viajante_aberto=null;
+      document.getElementById('pv-detalhe').classList.add('hidden');
+      perfil_do_viajante_render();
+    }
+
+    function perfil_do_viajante_abrir(id){
+      const v = perfil_do_viajante_viagens.find(x=>x.id===id);
+      const box = document.getElementById('pv-detalhe');
+      if(perfil_do_viajante_aberto===id){ perfil_do_viajante_aberto=null; box.classList.add('hidden'); }
+      else{
+        perfil_do_viajante_aberto=id;
+        document.getElementById('pv-det-titulo').textContent = v.t+" · "+v.d;
+        document.getElementById('pv-det-texto').textContent = v.r;
+        box.classList.remove('hidden');
+      }
+      perfil_do_viajante_render();
+    }
+
+    function perfil_do_viajante_toggle(){
+      const b=document.getElementById('pv-notif'), s=b.firstElementChild;
+      const on = b.style.background !== 'rgb(203, 213, 225)';
+      b.style.background = on ? '#CBD5E1' : '#2563EB';
+      s.style.left = on ? '2px' : '22px';
+      document.getElementById('pv-notif-sub').textContent = on ? 'Lembretes pausados' : 'Check-in, embarque e reservas';
+    }
+
+    function perfil_do_viajante_sincronizar(){
+      const b=document.getElementById('pv-sync-btn'), s=document.getElementById('pv-sync-sub');
+      b.textContent='...'; s.textContent='Sincronizando roteiros e fotos…';
+      setTimeout(()=>{
+        const h=new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+        b.textContent='Feito'; b.style.color='#1E3A5F';
+        s.textContent='Última sincronia: hoje, '+h+' · 14 roteiros';
+        setTimeout(()=>{b.textContent='Agora';b.style.color='#2563EB';},2200);
+      },900);
+    }
+
+    function perfil_do_viajante_conta(){
+      const c=document.getElementById('pv-conta');
+      c.classList.toggle('hidden');
+      document.getElementById('pv-conta-seta').textContent = c.classList.contains('hidden')?'›':'▾';
+    }
+
+    function perfil_do_viajante_salvar(){
+      const n=document.getElementById('pv-in-nome').value.trim()||'Mariana Castilho';
+      const m=document.getElementById('pv-in-moeda').value;
+      document.querySelector('[data-tela="perfil-do-viajante"] .pv-num').textContent=n;
+      const av=document.querySelector('[data-tela="perfil-do-viajante"] .w-16');
+      av.textContent=n.split(' ').filter(Boolean).slice(0,2).map(p=>p[0].toUpperCase()).join('');
+      const msg=document.getElementById('pv-salvo');
+      msg.textContent='Perfil salvo · moeda: '+m;
+      msg.classList.remove('hidden');
+    }
+
+    function perfil_do_viajante_trocarFoto(){
+      const m=document.getElementById('pv-foto-msg');
+      m.classList.remove('hidden');
+      setTimeout(()=>m.classList.add('hidden'),2000);
+    }
+
+    perfil_do_viajante_render();
+  </script>
+</section>
+
     <!-- TELAS -->
   </main>
 
