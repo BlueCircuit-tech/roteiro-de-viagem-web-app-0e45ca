@@ -653,6 +653,303 @@ mapa_da_viagem_render();
 </script>
 </section>
 
+    <section data-tela="fotos-e-documentos" class="hidden">
+  <style>
+    .fd-tab{flex:1;padding:.55rem 0;font-size:.8rem;font-weight:600;border-radius:.6rem;transition:.15s}
+    .fd-tab-on{background:#1E3A5F;color:#F8FAFC}
+    .fd-tab-off{color:#64748B}
+    .fd-card{background:#fff;border:1px solid #E2E8F0;border-radius:.85rem}
+    .fd-selo{font-size:.6rem;font-weight:700;letter-spacing:.03em;padding:.12rem .4rem;border-radius:.3rem}
+  </style>
+
+  <div class="px-5 pt-5 pb-2">
+    <p class="text-[11px] uppercase tracking-[.18em] text-[#2563EB] font-semibold">Portugal &amp; Espanha</p>
+    <h2 class="text-[22px] leading-tight font-semibold text-[#1E3A5F] mt-1">Fotos e Documentos</h2>
+    <p class="text-[12px] text-slate-500 mt-1">12 a 26 de outubro de 2024 · 48 fotos · 6 arquivos</p>
+  </div>
+
+  <div class="px-5">
+    <div class="flex gap-1 p-1 rounded-[.8rem] bg-[#EEF2F7]">
+      <button class="fd-tab fd-tab-on" data-fdtab="galeria" onclick="fotos_e_documentos_aba('galeria')">Galeria</button>
+      <button class="fd-tab fd-tab-off" data-fdtab="docs" onclick="fotos_e_documentos_aba('docs')">Documentos</button>
+    </div>
+  </div>
+
+  <div id="fd-galeria" class="px-5 pt-4 pb-32">
+    <div class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" style="scrollbar-width:none">
+      <button class="fd-chip shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-full bg-[#1E3A5F] text-[#F8FAFC]" data-fdfiltro="tudo" onclick="fotos_e_documentos_filtro('tudo')">Todos os dias</button>
+      <button class="fd-chip shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E2E8F0] text-slate-600" data-fdfiltro="lisboa" onclick="fotos_e_documentos_filtro('lisboa')">Lisboa</button>
+      <button class="fd-chip shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E2E8F0] text-slate-600" data-fdfiltro="porto" onclick="fotos_e_documentos_filtro('porto')">Porto</button>
+      <button class="fd-chip shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-full bg-white border border-[#E2E8F0] text-slate-600" data-fdfiltro="sevilha" onclick="fotos_e_documentos_filtro('sevilha')">Sevilha</button>
+    </div>
+
+    <div class="fd-grupo mt-5" data-fdgrupo="lisboa">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Dia 2 · Lisboa</p>
+          <p class="text-[11px] text-slate-500">13 de outubro · Alfama e Belém</p>
+        </div>
+        <span class="text-[11px] text-slate-400">18 fotos</span>
+      </div>
+      <div class="grid grid-cols-3 gap-1.5 mt-2">
+        <button onclick="fotos_e_documentos_verFoto('Bondinho 28 na Alfama','13/10 · Lisboa, Portugal','#1E3A5F')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(150deg,#1E3A5F,#2563EB)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Alfama</span>
+        </button>
+        <button onclick="fotos_e_documentos_verFoto('Torre de Belém ao pôr do sol','13/10 · Lisboa, Portugal','#2563EB')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(160deg,#2563EB,#93B4F5)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Belém</span>
+        </button>
+        <button onclick="fotos_e_documentos_verFoto('Pastéis de Belém','13/10 · Lisboa, Portugal','#3B5C86')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(140deg,#3B5C86,#C8D6E8)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Café</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="fd-grupo mt-5" data-fdgrupo="porto">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Dia 6 · Porto</p>
+          <p class="text-[11px] text-slate-500">17 de outubro · Ribeira e Gaia</p>
+        </div>
+        <span class="text-[11px] text-slate-400">21 fotos</span>
+      </div>
+      <div class="grid grid-cols-3 gap-1.5 mt-2">
+        <button onclick="fotos_e_documentos_verFoto('Ponte Dom Luís I','17/10 · Porto, Portugal','#1E3A5F')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(200deg,#1E3A5F,#4A7BC8)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Ribeira</span>
+        </button>
+        <button onclick="fotos_e_documentos_verFoto('Livraria Lello','17/10 · Porto, Portugal','#2A4A75')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(30deg,#2A4A75,#7FA3D9)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Lello</span>
+        </button>
+        <button onclick="fotos_e_documentos_verFoto('Cave de vinho do Porto em Gaia','17/10 · Vila Nova de Gaia','#2563EB')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(120deg,#2563EB,#1E3A5F)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Gaia</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="fd-grupo mt-5" data-fdgrupo="sevilha">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="text-[13px] font-semibold text-[#1E3A5F]">Dia 11 · Sevilha</p>
+          <p class="text-[11px] text-slate-500">22 de outubro · Alcázar</p>
+        </div>
+        <span class="text-[11px] text-slate-400">9 fotos</span>
+      </div>
+      <div class="grid grid-cols-3 gap-1.5 mt-2">
+        <button onclick="fotos_e_documentos_verFoto('Real Alcázar de Sevilha','22/10 · Sevilha, Espanha','#1E3A5F')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(170deg,#17304F,#5B87C4)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Alcázar</span>
+        </button>
+        <button onclick="fotos_e_documentos_verFoto('Plaza de España','22/10 · Sevilha, Espanha','#2563EB')" class="aspect-square rounded-lg overflow-hidden relative" style="background:linear-gradient(60deg,#2563EB,#AFC6EC)">
+          <span class="absolute bottom-1 left-1.5 text-[9px] text-white/90 font-medium">Plaza</span>
+        </button>
+        <button onclick="fotos_e_documentos_abrirUpload()" class="aspect-square rounded-lg border border-dashed border-[#93B4F5] bg-[#F8FAFC] flex flex-col items-center justify-center gap-1">
+          <span class="text-[#2563EB] text-lg leading-none">+</span>
+          <span class="text-[9px] text-[#2563EB] font-semibold">Adicionar</span>
+        </button>
+      </div>
+    </div>
+
+    <button onclick="mostrarTela('mapa-da-viagem')" class="mt-6 w-full fd-card px-4 py-3 flex items-center justify-between text-left">
+      <span class="text-[12px] text-[#1E3A5F] font-semibold">Ver fotos no mapa da viagem</span>
+      <span class="text-[#2563EB] text-[13px]">→</span>
+    </button>
+  </div>
+
+  <div id="fd-docs" class="hidden px-5 pt-4 pb-32">
+    <div class="flex items-center justify-between">
+      <p class="text-[12px] text-slate-500">6 arquivos · 4 disponíveis offline</p>
+      <button onclick="fotos_e_documentos_baixarTodos()" id="fd-btn-offline" class="text-[11px] font-semibold text-[#2563EB]">Baixar todos</button>
+    </div>
+
+    <div class="mt-3 space-y-2" id="fd-lista-docs">
+      <button onclick="fotos_e_documentos_verDoc('Passagem TAP LIS→OPO','Bilhete eletrônico · localizador K8T29P','PDF · 412 KB','Emitido em 02/09/2024')" class="w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left">
+        <span class="w-9 h-9 rounded-lg bg-[#1E3A5F] text-white text-[15px] flex items-center justify-center">✈️</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">Passagem TAP · LIS → OPO</span>
+          <span class="block text-[11px] text-slate-500">PDF · 412 KB</span>
+        </span>
+        <span class="fd-selo bg-[#DCE9FB] text-[#1E3A5F]">OFFLINE</span>
+      </button>
+
+      <button onclick="fotos_e_documentos_verDoc('Reserva Hotel Baixa House','Rua da Vitória 132, Lisboa · check-in 12/10','PDF · 268 KB','Confirmação BH-77410')" class="w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left">
+        <span class="w-9 h-9 rounded-lg bg-[#2563EB] text-white text-[15px] flex items-center justify-center">🏨</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">Reserva Hotel Baixa House</span>
+          <span class="block text-[11px] text-slate-500">PDF · 268 KB</span>
+        </span>
+        <span class="fd-selo bg-[#DCE9FB] text-[#1E3A5F]">OFFLINE</span>
+      </button>
+
+      <button onclick="fotos_e_documentos_verDoc('Seguro viagem Assist Card','Apólice AC-2024-558903 · cobertura Europa','PDF · 1,1 MB','Válido de 12/10 a 26/10/2024')" class="w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left">
+        <span class="w-9 h-9 rounded-lg bg-[#1E3A5F] text-white text-[15px] flex items-center justify-center">🛡️</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">Seguro viagem Assist Card</span>
+          <span class="block text-[11px] text-slate-500">PDF · 1,1 MB</span>
+        </span>
+        <span class="fd-selo bg-[#DCE9FB] text-[#1E3A5F]">OFFLINE</span>
+      </button>
+
+      <button onclick="fotos_e_documentos_verDoc('Voucher Alcázar de Sevilha','Entrada 22/10 às 10h30 · 2 adultos','PDF · 96 KB','Compra GetYourGuide #4482119')" class="w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left">
+        <span class="w-9 h-9 rounded-lg bg-[#2563EB] text-white text-[15px] flex items-center justify-center">🎟️</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">Voucher Alcázar de Sevilha</span>
+          <span class="block text-[11px] text-slate-500">PDF · 96 KB</span>
+        </span>
+        <span class="fd-selo bg-[#DCE9FB] text-[#1E3A5F]">OFFLINE</span>
+      </button>
+
+      <button onclick="fotos_e_documentos_verDoc('Passaporte — Marina Rezende','Nº FQ284116 · validade 08/2031','JPG · 2,4 MB','Digitalizado em 28/08/2024')" class="w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left" id="fd-doc-passaporte">
+        <span class="w-9 h-9 rounded-lg bg-[#EEF2F7] text-[#1E3A5F] text-[15px] flex items-center justify-center">🪪</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">Passaporte — Marina Rezende</span>
+          <span class="block text-[11px] text-slate-500">JPG · 2,4 MB</span>
+        </span>
+        <span class="fd-selo bg-[#F1F5F9] text-slate-500 fd-nuvem">NA NUVEM</span>
+      </button>
+
+      <button onclick="fotos_e_documentos_verDoc('Aluguel de carro Europcar','Retirada 18/10 · Aeroporto do Porto','PDF · 340 KB','Reserva EC-90233478')" class="w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left">
+        <span class="w-9 h-9 rounded-lg bg-[#EEF2F7] text-[#1E3A5F] text-[15px] flex items-center justify-center">🚗</span>
+        <span class="flex-1 min-w-0">
+          <span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">Aluguel de carro Europcar</span>
+          <span class="block text-[11px] text-slate-500">PDF · 340 KB</span>
+        </span>
+        <span class="fd-selo bg-[#F1F5F9] text-slate-500 fd-nuvem">NA NUVEM</span>
+      </button>
+    </div>
+
+    <button onclick="mostrarTela('compartilhar-roteiro')" class="mt-5 w-full fd-card px-4 py-3 flex items-center justify-between text-left">
+      <span class="text-[12px] text-[#1E3A5F] font-semibold">Compartilhar documentos com acompanhantes</span>
+      <span class="text-[#2563EB] text-[13px]">→</span>
+    </button>
+  </div>
+
+  <div class="sticky bottom-0 px-5 pb-4 pt-3 bg-gradient-to-t from-[#F8FAFC] via-[#F8FAFC] to-transparent">
+    <button onclick="fotos_e_documentos_abrirUpload()" class="w-full py-3.5 rounded-[.85rem] bg-[#2563EB] text-white text-[13px] font-semibold shadow-[0_6px_18px_-6px_rgba(37,99,235,.7)]">+ Anexar foto ou documento</button>
+  </div>
+
+  <div id="fd-modal-upload" class="hidden fixed inset-0 z-40 flex items-end justify-center">
+    <div class="absolute inset-0 bg-[#0F1F33]/50" onclick="fotos_e_documentos_fecharUpload()"></div>
+    <div class="relative w-full max-w-[430px] bg-white rounded-t-2xl p-5">
+      <p class="text-[14px] font-semibold text-[#1E3A5F]">Adicionar à viagem</p>
+      <p class="text-[11px] text-slate-500 mt-0.5">Escolha a origem do arquivo</p>
+      <div class="mt-4 space-y-2">
+        <button onclick="fotos_e_documentos_enviar('camera')" class="w-full fd-card px-4 py-3 flex items-center gap-3 text-left">
+          <span class="w-8 h-8 rounded-lg bg-[#1E3A5F] text-white flex items-center justify-center">📷</span>
+          <span class="text-[13px] font-semibold text-[#1E3A5F]">Tirar foto agora</span>
+        </button>
+        <button onclick="fotos_e_documentos_enviar('galeria')" class="w-full fd-card px-4 py-3 flex items-center gap-3 text-left">
+          <span class="w-8 h-8 rounded-lg bg-[#2563EB] text-white flex items-center justify-center">🖼️</span>
+          <span class="text-[13px] font-semibold text-[#1E3A5F]">Escolher da galeria</span>
+        </button>
+        <button onclick="fotos_e_documentos_enviar('arquivo')" class="w-full fd-card px-4 py-3 flex items-center gap-3 text-left">
+          <span class="w-8 h-8 rounded-lg bg-[#EEF2F7] text-[#1E3A5F] flex items-center justify-center">📄</span>
+          <span class="text-[13px] font-semibold text-[#1E3A5F]">Anexar PDF ou voucher</span>
+        </button>
+      </div>
+      <label class="block mt-4 text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Legenda / nome</label>
+      <input id="fd-input-nome" type="text" placeholder="Ex.: Voucher tour Sintra" class="mt-1.5 w-full px-3 py-2.5 rounded-lg border border-[#E2E8F0] text-[13px] outline-none focus:border-[#2563EB]">
+      <button onclick="fotos_e_documentos_fecharUpload()" class="mt-3 w-full py-2.5 text-[12px] font-semibold text-slate-500">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="fd-modal-visual" class="hidden fixed inset-0 z-40 flex items-center justify-center px-5">
+    <div class="absolute inset-0 bg-[#0F1F33]/80" onclick="fotos_e_documentos_fecharVisual()"></div>
+    <div class="relative w-full max-w-[380px] bg-white rounded-2xl overflow-hidden">
+      <div id="fd-visual-img" class="h-52 flex items-end p-4" style="background:linear-gradient(150deg,#1E3A5F,#2563EB)">
+        <span id="fd-visual-badge" class="fd-selo bg-white/20 text-white">FOTO</span>
+      </div>
+      <div class="p-4">
+        <p id="fd-visual-titulo" class="text-[15px] font-semibold text-[#1E3A5F]">—</p>
+        <p id="fd-visual-sub" class="text-[12px] text-slate-500 mt-1">—</p>
+        <p id="fd-visual-extra" class="text-[11px] text-slate-400 mt-2">—</p>
+        <div class="flex gap-2 mt-4">
+          <button onclick="fotos_e_documentos_fecharVisual();mostrarTela('detalhes-do-roteiro')" class="flex-1 py-2.5 rounded-lg bg-[#1E3A5F] text-white text-[12px] font-semibold">Ver no roteiro</button>
+          <button onclick="fotos_e_documentos_fecharVisual()" class="flex-1 py-2.5 rounded-lg border border-[#E2E8F0] text-[#1E3A5F] text-[12px] font-semibold">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="fd-toast" class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-lg bg-[#1E3A5F] text-white text-[12px] font-medium shadow-lg"></div>
+
+  <script>
+    function fotos_e_documentos_toast(t){
+      var e=document.getElementById('fd-toast');
+      e.textContent=t;e.classList.remove('hidden');
+      clearTimeout(window.__fdT);window.__fdT=setTimeout(function(){e.classList.add('hidden')},2200);
+    }
+    function fotos_e_documentos_aba(a){
+      document.querySelectorAll('[data-fdtab]').forEach(function(b){
+        var on=b.dataset.fdtab===a;
+        b.className='fd-tab '+(on?'fd-tab-on':'fd-tab-off');
+      });
+      document.getElementById('fd-galeria').classList.toggle('hidden',a!=='galeria');
+      document.getElementById('fd-docs').classList.toggle('hidden',a!=='docs');
+    }
+    function fotos_e_documentos_filtro(f){
+      document.querySelectorAll('.fd-chip').forEach(function(c){
+        var on=c.dataset.fdfiltro===f;
+        c.className='fd-chip shrink-0 text-[11px] font-semibold px-3 py-1.5 rounded-full '+(on?'bg-[#1E3A5F] text-[#F8FAFC]':'bg-white border border-[#E2E8F0] text-slate-600');
+      });
+      document.querySelectorAll('.fd-grupo').forEach(function(g){
+        g.classList.toggle('hidden',f!=='tudo'&&g.dataset.fdgrupo!==f);
+      });
+    }
+    function fotos_e_documentos_verFoto(t,s,cor){
+      document.getElementById('fd-visual-img').style.background='linear-gradient(150deg,'+cor+',#93B4F5)';
+      document.getElementById('fd-visual-badge').textContent='FOTO';
+      document.getElementById('fd-visual-titulo').textContent=t;
+      document.getElementById('fd-visual-sub').textContent=s;
+      document.getElementById('fd-visual-extra').textContent='Salva no álbum da viagem · sincronizada';
+      document.getElementById('fd-modal-visual').classList.remove('hidden');
+    }
+    function fotos_e_documentos_verDoc(t,s,tam,extra){
+      document.getElementById('fd-visual-img').style.background='linear-gradient(150deg,#1E3A5F,#2563EB)';
+      document.getElementById('fd-visual-badge').textContent=tam;
+      document.getElementById('fd-visual-titulo').textContent=t;
+      document.getElementById('fd-visual-sub').textContent=s;
+      document.getElementById('fd-visual-extra').textContent=extra;
+      document.getElementById('fd-modal-visual').classList.remove('hidden');
+    }
+    function fotos_e_documentos_fecharVisual(){document.getElementById('fd-modal-visual').classList.add('hidden');}
+    function fotos_e_documentos_abrirUpload(){document.getElementById('fd-modal-upload').classList.remove('hidden');}
+    function fotos_e_documentos_fecharUpload(){document.getElementById('fd-modal-upload').classList.add('hidden');}
+    function fotos_e_documentos_enviar(origem){
+      var nome=document.getElementById('fd-input-nome').value.trim();
+      var ehFoto=origem!=='arquivo';
+      if(!nome)nome=ehFoto?'Foto sem legenda':'Documento anexado';
+      fotos_e_documentos_fecharUpload();
+      document.getElementById('fd-input-nome').value='';
+      if(ehFoto){
+        fotos_e_documentos_aba('galeria');
+        var g=document.querySelector('[data-fdgrupo="sevilha"] .grid');
+        var b=document.createElement('button');
+        b.className='aspect-square rounded-lg overflow-hidden relative ring-2 ring-[#2563EB]';
+        b.style.background='linear-gradient(140deg,#2563EB,#1E3A5F)';
+        b.innerHTML='<span class="absolute bottom-1 left-1.5 text-[9px] text-white font-medium">Nova</span>';
+        b.onclick=function(){fotos_e_documentos_verFoto(nome,'Hoje · adicionada por você','#2563EB');};
+        g.insertBefore(b,g.lastElementChild);
+        fotos_e_documentos_toast(origem==='camera'?'Foto capturada e salva':'Foto adicionada ao álbum');
+      }else{
+        fotos_e_documentos_aba('docs');
+        var l=document.getElementById('fd-lista-docs');
+        var d=document.createElement('button');
+        d.className='w-full fd-card px-3.5 py-3 flex items-center gap-3 text-left ring-2 ring-[#2563EB]';
+        d.innerHTML='<span class="w-9 h-9 rounded-lg bg-[#2563EB] text-white text-[15px] flex items-center justify-center">📄</span><span class="flex-1 min-w-0"><span class="block text-[13px] font-semibold text-[#1E3A5F] truncate">'+nome+'</span><span class="block text-[11px] text-slate-500">PDF · 188 KB</span></span><span class="fd-selo bg-[#DCE9FB] text-[#1E3A5F]">OFFLINE</span>';
+        d.onclick=function(){fotos_e_documentos_verDoc(nome,'Anexado hoje por você','PDF · 188 KB','Disponível offline');};
+        l.insertBefore(d,l.firstChild);
+        fotos_e_documentos_toast('Documento anexado à viagem');
+      }
+    }
+    function fotos_e_documentos_baixarTodos(){
+      document.querySelectorAll('#fd-lista-docs .fd-nuvem').forEach(function(s){
+        s.textContent='OFFLINE';
+        s.className='fd-selo bg-[#DCE9FB] text-[#1E3A5F]';
+      });
+      document.getElementById('fd-btn-offline').textContent='Tudo offline ✓';
+      fotos_e_documentos_toast('6 arquivos disponíveis sem internet');
+    }
+  </script>
+</section>
+
     <!-- TELAS -->
   </main>
 
