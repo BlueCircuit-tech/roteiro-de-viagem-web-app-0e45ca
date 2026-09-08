@@ -295,6 +295,168 @@ tailwind.config = {
   </script>
 </section>
 
+    <section data-tela="detalhes-do-roteiro" class="hidden">
+  <style>
+    .dr-capa{background-image:linear-gradient(180deg,rgba(30,58,95,.15) 0%,rgba(30,58,95,.92) 100%),url('https://images.unsplash.com/photo-1516306580123-e6e52b1b7b5f?auto=format&fit=crop&w=900&q=60');background-size:cover;background-position:center}
+    .dr-aba{flex:0 0 auto;padding:.5rem .95rem;border-radius:999px;font-size:.8rem;font-weight:600;border:1px solid #E2E8F0;color:#1E3A5F;background:#fff;transition:.15s}
+    .dr-aba[data-on="1"]{background:#1E3A5F;border-color:#1E3A5F;color:#F8FAFC}
+    .dr-atalho{flex:1;display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.7rem .2rem;border-radius:.9rem;background:#fff;border:1px solid #E8EDF3;font-size:.68rem;font-weight:600;color:#1E3A5F}
+    .dr-card{background:#fff;border:1px solid #E8EDF3;border-radius:1rem}
+    .dr-sel{border-color:#2563EB;box-shadow:0 0 0 3px rgba(37,99,235,.10)}
+  </style>
+
+  <div class="dr-capa text-[#F8FAFC] px-5 pt-6 pb-5">
+    <button onclick="mostrarTela('meus-roteiros')" class="mb-8 inline-flex items-center gap-1.5 text-[.72rem] font-semibold bg-white/15 backdrop-blur px-3 py-1.5 rounded-full">
+      ← Meus roteiros
+    </button>
+    <p class="text-[.68rem] tracking-[.18em] uppercase text-white/70">14 a 18 de março · 2026</p>
+    <h2 class="text-[1.55rem] leading-tight font-semibold mt-1">Lisboa &amp; Sintra</h2>
+    <p class="text-[.78rem] text-white/80 mt-1">Portugal · 5 dias · 2 viajantes</p>
+    <div class="flex gap-4 mt-4 text-[.72rem]">
+      <span class="bg-white/15 backdrop-blur px-2.5 py-1 rounded-lg">18 paradas</span>
+      <span class="bg-white/15 backdrop-blur px-2.5 py-1 rounded-lg">Custo est. € 1.240</span>
+    </div>
+  </div>
+
+  <div class="px-4 -mt-4">
+    <div class="flex gap-2">
+      <button onclick="mostrarTela('fotos-e-documentos')" class="dr-atalho">
+        <span class="text-base">📄</span>Documentos
+      </button>
+      <button onclick="mostrarTela('fotos-e-documentos')" class="dr-atalho">
+        <span class="text-base">📷</span>Fotos
+      </button>
+      <button onclick="mostrarTela('compartilhar-roteiro')" class="dr-atalho">
+        <span class="text-base">🔗</span>Compartilhar
+      </button>
+    </div>
+  </div>
+
+  <div class="px-4 mt-5">
+    <div class="flex gap-2 overflow-x-auto pb-1" id="drAbas">
+      <button class="dr-aba" data-dia="1" data-on="1" onclick="detalhes_do_roteiro_dia('1')">Dia 1 · 14/03</button>
+      <button class="dr-aba" data-dia="2" onclick="detalhes_do_roteiro_dia('2')">Dia 2 · 15/03</button>
+      <button class="dr-aba" data-dia="3" onclick="detalhes_do_roteiro_dia('3')">Dia 3 · 16/03</button>
+      <button class="dr-aba" data-dia="4" onclick="detalhes_do_roteiro_dia('4')">Dia 4 · 17/03</button>
+    </div>
+  </div>
+
+  <div class="px-4 mt-4 flex items-center justify-between">
+    <div>
+      <p class="text-[.95rem] font-semibold text-[#1E3A5F]" id="drTituloDia">Chegada e Alfama</p>
+      <p class="text-[.72rem] text-slate-500" id="drResumoDia">4 paradas · € 186 estimados</p>
+    </div>
+    <button onclick="detalhes_do_roteiro_reordenar()" id="drBtnOrdem" class="text-[.7rem] font-semibold text-[#2563EB] border border-[#2563EB]/30 rounded-full px-3 py-1.5">Reordenar</button>
+  </div>
+
+  <div class="px-4 mt-3 pb-4 space-y-2.5" id="drTimeline"></div>
+
+  <div class="px-4 pb-8 space-y-2.5">
+    <button onclick="mostrarTela('mapa-da-viagem')" class="w-full bg-[#2563EB] text-white text-[.85rem] font-semibold py-3.5 rounded-xl">Ver dia no mapa</button>
+    <button onclick="mostrarTela('perfil-do-viajante')" class="w-full text-[.78rem] font-semibold text-[#1E3A5F] py-2">Preferências do viajante</button>
+  </div>
+
+  <script>
+    var drDados = {
+      '1': {t:'Chegada e Alfama', p:[
+        {h:'09:40', n:'Aeroporto Humberto Delgado', d:'Desembarque TP 088 · metrô linha vermelha', c:'✈️', v:'€ 0', cat:'Transporte'},
+        {h:'12:00', n:'Hotel Baixa House', op:'Rua dos Fanqueiros, 208', c:'🛏️', v:'€ 98', cat:'Hospedagem'},
+        {h:'14:30', n:'Time Out Market Ribeira', op:'Almoço · bifana e vinho verde', c:'🍽️', v:'€ 28', cat:'Refeição'},
+        {h:'17:00', n:'Miradouro de Santa Luzia', op:'Pôr do sol sobre o Tejo', c:'📍', v:'€ 0', cat:'Passeio'}
+      ]},
+      '2': {t:'Belém e Bairro Alto', p:[
+        {h:'08:30', n:'Pastéis de Belém', op:'Café da manhã · fila lateral é mais rápida', c:'☕', v:'€ 9', cat:'Refeição'},
+        {h:'10:00', n:'Mosteiro dos Jerónimos', op:'Ingresso online 10h15', c:'🏛️', v:'€ 18', cat:'Cultura'},
+        {h:'13:00', n:'Torre de Belém', op:'Visita rápida + orla', c:'📍', v:'€ 8', cat:'Passeio'},
+        {h:'20:30', n:'Casa de Fado Mesa de Frades', op:'Reserva no nome de Camila', c:'🎶', v:'€ 45', cat:'Noite'}
+      ]},
+      '3': {t:'Bate-volta a Sintra', p:[
+        {h:'08:10', n:'Estação Rossio → Sintra', op:'Trem CP · 40 min', c:'🚆', v:'€ 5', cat:'Transporte'},
+        {h:'09:30', n:'Palácio da Pena', op:'Entrada por horário marcado', c:'🏰', v:'€ 20', cat:'Cultura'},
+        {h:'13:00', n:'Tascantiga', op:'Petiscos no centro histórico', c:'🍽️', v:'€ 24', cat:'Refeição'},
+        {h:'16:00', n:'Quinta da Regaleira', op:'Poço iniciático', c:'🌿', v:'€ 15', cat:'Passeio'}
+      ]},
+      '4': {t:'Cascais e despedida', p:[
+        {h:'09:00', n:'Cais do Sodré → Cascais', op:'Trem da linha do Estoril', c:'🚆', v:'€ 5', cat:'Transporte'},
+        {h:'11:00', n:'Praia da Rainha', op:'Manhã de praia', c:'🏖️', v:'€ 0', cat:'Passeio'},
+        {h:'14:00', n:'Mar do Inferno', op:'Almoço com vista', c:'🍽️', v:'€ 36', cat:'Refeição'},
+        {h:'19:00', n:'Voo TP 089 · GRU', op:'Check-in online liberado 18h', c:'✈️', v:'€ 0', cat:'Transporte'}
+      ]}
+    };
+    var drDiaAtual = '1', drOrdenando = false, drSelecionada = null;
+
+    function detalhes_do_roteiro_dia(d){
+      drDiaAtual = d; drSelecionada = null;
+      document.querySelectorAll('#drAbas .dr-aba').forEach(function(b){
+        if(b.dataset.dia === d){ b.dataset.on = '1'; } else { b.removeAttribute('data-on'); }
+      });
+      detalhes_do_roteiro_render();
+    }
+
+    function detalhes_do_roteiro_render(){
+      var dia = drDados[drDiaAtual];
+      var total = dia.p.reduce(function(s,x){ return s + parseInt(x.v.replace(/\D/g,'') || 0); },0);
+      document.getElementById('drTituloDia').textContent = dia.t;
+      document.getElementById('drResumoDia').textContent = dia.p.length + ' paradas · € ' + total + ' estimados';
+      var alvo = document.getElementById('drTimeline');
+      alvo.innerHTML = dia.p.map(function(x,i){
+        var sel = drSelecionada === i;
+        return '<div class="dr-card ' + (sel ? 'dr-sel' : '') + ' p-3 flex gap-3 items-start" onclick="detalhes_do_roteiro_abrir(' + i + ')">' +
+          '<div class="flex flex-col items-center pt-0.5">' +
+            '<span class="text-[.68rem] font-semibold text-[#2563EB]">' + x.h + '</span>' +
+            '<span class="w-8 h-8 mt-1 rounded-full bg-[#F8FAFC] border border-[#E8EDF3] flex items-center justify-center text-sm">' + x.c + '</span>' +
+            (i < dia.p.length - 1 ? '<span class="w-px flex-1 min-h-4 bg-[#E2E8F0] mt-1"></span>' : '') +
+          '</div>' +
+          '<div class="flex-1 min-w-0">' +
+            '<div class="flex items-start justify-between gap-2">' +
+              '<p class="text-[.85rem] font-semibold text-[#1E3A5F] leading-snug">' + x.n + '</p>' +
+              '<span class="text-[.72rem] font-semibold text-[#1E3A5F] whitespace-nowrap">' + x.v + '</span>' +
+            '</div>' +
+            (x.d || x.op ? '<p class="text-[.72rem] text-slate-500 mt-0.5 truncate">' + (x.d || x.op) + '</p>' : '') +
+            '<span class="inline-block mt-2 text-[.62rem] font-semibold tracking-wide uppercase text-[#2563EB] bg-[#2563EB]/8 px-2 py-0.5 rounded">' + x.cat + '</span>' +
+            (sel ? '<div class="mt-3 flex gap-2">' +
+              '<button onclick="event.stopPropagation();mostrarTela(\'mapa-da-viagem\')" class="flex-1 bg-[#1E3A5F] text-white text-[.72rem] font-semibold py-2 rounded-lg">Ver no mapa</button>' +
+              '<button onclick="event.stopPropagation();mostrarTela(\'fotos-e-documentos\')" class="flex-1 border border-[#E2E8F0] text-[#1E3A5F] text-[.72rem] font-semibold py-2 rounded-lg">Anexos</button>' +
+            '</div>' : '') +
+          '</div>' +
+          (drOrdenando ? '<div class="flex flex-col gap-1 pt-1">' +
+            '<button onclick="event.stopPropagation();detalhes_do_roteiro_mover(' + i + ',-1)" class="w-7 h-7 rounded-lg bg-[#F8FAFC] border border-[#E8EDF3] text-[.7rem] text-[#1E3A5F]">▲</button>' +
+            '<button onclick="event.stopPropagation();detalhes_do_roteiro_mover(' + i + ',1)" class="w-7 h-7 rounded-lg bg-[#F8FAFC] border border-[#E8EDF3] text-[.7rem] text-[#1E3A5F]">▼</button>' +
+          '</div>' : '') +
+        '</div>';
+      }).join('');
+    }
+
+    function detalhes_do_roteiro_abrir(i){
+      if(drOrdenando) return;
+      drSelecionada = (drSelecionada === i) ? null : i;
+      detalhes_do_roteiro_render();
+    }
+
+    function detalhes_do_roteiro_reordenar(){
+      drOrdenando = !drOrdenando;
+      drSelecionada = null;
+      var b = document.getElementById('drBtnOrdem');
+      b.textContent = drOrdenando ? 'Concluir' : 'Reordenar';
+      b.className = drOrdenando
+        ? 'text-[.7rem] font-semibold text-white bg-[#2563EB] rounded-full px-3 py-1.5'
+        : 'text-[.7rem] font-semibold text-[#2563EB] border border-[#2563EB]/30 rounded-full px-3 py-1.5';
+      detalhes_do_roteiro_render();
+    }
+
+    function detalhes_do_roteiro_mover(i,dir){
+      var arr = drDados[drDiaAtual].p, j = i + dir;
+      if(j < 0 || j >= arr.length) return;
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      var hs = arr.map(function(x){ return x.h; }).sort();
+      arr.forEach(function(x,k){ x.h = hs[k]; });
+      detalhes_do_roteiro_render();
+    }
+
+    detalhes_do_roteiro_render();
+  </script>
+</section>
+
     <!-- TELAS -->
   </main>
 
