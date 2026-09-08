@@ -457,6 +457,202 @@ tailwind.config = {
   </script>
 </section>
 
+    <section data-tela="mapa-da-viagem" class="hidden">
+  <style>
+    .mv-pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;transition:all .18s ease}
+    .mv-num{width:26px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#F8FAFC;background:#1E3A5F;box-shadow:0 2px 6px rgba(30,58,95,.35);border:2px solid #F8FAFC}
+    .mv-pin[data-ativo="1"] .mv-num{background:#2563EB;width:32px;height:32px;font-size:13px;box-shadow:0 4px 12px rgba(37,99,235,.5)}
+    .mv-chip{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid #dbe3ee;background:#fff;color:#1E3A5F;white-space:nowrap}
+    .mv-chip[data-on="1"]{background:#1E3A5F;color:#F8FAFC;border-color:#1E3A5F}
+    .mv-fab{width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(30,58,95,.12)}
+    .mv-noite{filter:invert(1) hue-rotate(185deg) saturate(.7) brightness(.95)}
+  </style>
+
+  <div class="relative w-full h-[calc(100dvh-8.5rem)] min-h-[560px] overflow-hidden bg-[#F8FAFC]">
+
+    <div id="mv-mapa" class="absolute inset-0">
+      <svg viewBox="0 0 100 140" preserveAspectRatio="none" class="w-full h-full">
+        <rect width="100" height="140" fill="#eef2f7"/>
+        <rect x="6" y="10" width="26" height="20" rx="2" fill="#e2e8f0"/>
+        <rect x="40" y="6" width="30" height="16" rx="2" fill="#e2e8f0"/>
+        <rect x="74" y="18" width="22" height="26" rx="2" fill="#e2e8f0"/>
+        <rect x="10" y="46" width="24" height="24" rx="2" fill="#dfe7f0"/>
+        <rect x="46" y="40" width="20" height="30" rx="2" fill="#e2e8f0"/>
+        <rect x="70" y="56" width="24" height="22" rx="2" fill="#e2e8f0"/>
+        <rect x="8" y="82" width="30" height="18" rx="2" fill="#e2e8f0"/>
+        <rect x="48" y="84" width="34" height="16" rx="2" fill="#dfe7f0"/>
+        <path d="M0 34 H100 M0 76 H100 M0 106 H100 M36 0 V120 M68 0 V120" stroke="#f8fafc" stroke-width="3.5" vector-effect="non-scaling-stroke"/>
+        <path d="M18 0 V120 M52 0 V120 M86 0 V120 M0 56 H100 M0 92 H100" stroke="#f8fafc" stroke-width="2" vector-effect="non-scaling-stroke"/>
+        <path d="M0 118 Q30 124 52 120 T100 124 L100 140 L0 140 Z" fill="#cfe0f2"/>
+        <text x="50" y="133" text-anchor="middle" font-size="4" fill="#7c9bbd" style="font-style:italic">Rio Tejo</text>
+        <circle cx="24" cy="58" r="7" fill="#d7e8d9"/>
+      </svg>
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="absolute inset-0 w-full h-full pointer-events-none">
+        <polyline id="mv-rota" points="" fill="none" stroke="#2563EB" stroke-width="2.5" stroke-dasharray="5 4" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".85"/>
+      </svg>
+      <div id="mv-pins" class="absolute inset-0"></div>
+      <div class="absolute" style="left:30%;top:72%">
+        <span class="absolute inline-flex h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#2563EB] opacity-25 animate-ping"></span>
+        <span class="absolute h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#2563EB] border-2 border-white shadow"></span>
+      </div>
+    </div>
+
+    <div class="absolute top-0 left-0 right-0 p-3 space-y-2">
+      <div class="rounded-xl bg-white/95 backdrop-blur border border-[#e2e8f0] shadow-sm">
+        <div class="flex items-center gap-2 px-3 py-2.5">
+          <svg viewBox="0 0 24 24" class="w-4 h-4 text-[#1E3A5F]" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>
+          <input id="mv-busca" type="text" autocomplete="off" oninput="mapa_da_viagem_buscar(this.value)" placeholder="Buscar local em Lisboa"
+            class="flex-1 text-sm text-[#1E3A5F] placeholder:text-slate-400 outline-none bg-transparent">
+          <button onclick="mapa_da_viagem_limpar()" class="text-xs font-semibold text-[#2563EB]">Limpar</button>
+        </div>
+        <div id="mv-sugestoes" class="hidden border-t border-[#eef2f7] max-h-56 overflow-y-auto"></div>
+      </div>
+      <div class="flex gap-2 overflow-x-auto no-scrollbar">
+        <button class="mv-chip" data-on="0" onclick="mapa_da_viagem_dia(1)">Dia 1 · Belém</button>
+        <button class="mv-chip" data-on="0" onclick="mapa_da_viagem_dia(2)">Dia 2 · Baixa</button>
+        <button class="mv-chip" data-on="0" onclick="mapa_da_viagem_dia(3)">Dia 3 · Alfama</button>
+      </div>
+    </div>
+
+    <div class="absolute right-3 top-32 flex flex-col gap-2">
+      <button class="mv-fab" onclick="mapa_da_viagem_centrar()" title="Minha localização">📍</button>
+      <button class="mv-fab" onclick="mapa_da_viagem_noite()" title="Modo noturno">🌙</button>
+      <button class="mv-fab" onclick="mostrarTela('fotos-e-documentos')" title="Fotos e documentos">🖼️</button>
+      <button class="mv-fab" onclick="mostrarTela('compartilhar-roteiro')" title="Compartilhar">🔗</button>
+    </div>
+
+    <div id="mv-toast" class="hidden absolute left-1/2 -translate-x-1/2 top-40 z-20 px-4 py-2 rounded-lg bg-[#1E3A5F] text-[#F8FAFC] text-xs font-semibold shadow-lg"></div>
+
+    <div id="mv-card" class="absolute left-0 right-0 bottom-0 translate-y-[120%] transition-transform duration-300 ease-out">
+      <div class="mx-3 mb-3 rounded-2xl bg-white border border-[#e2e8f0] shadow-[0_-4px_24px_rgba(30,58,95,.15)] overflow-hidden">
+        <div class="flex justify-center pt-2"><div class="w-10 h-1 rounded-full bg-slate-200"></div></div>
+        <div class="p-3.5">
+          <div class="flex gap-3">
+            <div id="mv-foto" class="w-20 h-20 rounded-xl bg-[#dbe7f7] flex items-center justify-center text-3xl shrink-0">🗼</div>
+            <div class="flex-1 min-w-0">
+              <p id="mv-cat" class="text-[10px] font-bold tracking-wide uppercase text-[#2563EB]">Monumento</p>
+              <h3 id="mv-nome" class="text-base font-bold text-[#1E3A5F] leading-tight truncate">Torre de Belém</h3>
+              <p id="mv-meta" class="text-xs text-slate-500 mt-0.5">⭐ 4,7 (18.402) · 1,2 km · 45 min</p>
+              <p id="mv-end" class="text-xs text-slate-400 mt-0.5 truncate">Av. Brasília, 1400-038 Lisboa</p>
+            </div>
+            <button onclick="mapa_da_viagem_fechar()" class="text-slate-400 text-lg leading-none px-1">×</button>
+          </div>
+          <div id="mv-horario" class="mt-3 flex items-center gap-2 text-xs text-[#1E3A5F] bg-[#F8FAFC] border border-[#eef2f7] rounded-lg px-3 py-2">
+            <span>🕘</span><span>Parada 1 · 09:00 — entrada 8€ · ingresso salvo em Documentos</span>
+          </div>
+          <div class="mt-3 flex gap-2">
+            <button id="mv-acao" onclick="mapa_da_viagem_acao()" class="flex-1 py-2.5 rounded-xl bg-[#2563EB] text-white text-sm font-semibold active:scale-[.98] transition">Adicionar ao roteiro</button>
+            <button onclick="mostrarTela('detalhes-do-roteiro')" class="px-3 py-2.5 rounded-xl border border-[#1E3A5F] text-[#1E3A5F] text-sm font-semibold">Roteiro</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mv-resumo" class="absolute left-0 right-0 bottom-0">
+      <div class="mx-3 mb-3 rounded-2xl bg-white border border-[#e2e8f0] shadow-[0_-4px_20px_rgba(30,58,95,.12)] px-4 py-3 flex items-center gap-3">
+        <div class="flex-1">
+          <p id="mv-resumo-titulo" class="text-sm font-bold text-[#1E3A5F]">Dia 1 · Belém e Ajuda</p>
+          <p id="mv-resumo-sub" class="text-xs text-slate-500">5 paradas · 6,4 km a pé · 20 de março</p>
+        </div>
+        <button onclick="mostrarTela('detalhes-do-roteiro')" class="px-3 py-2 rounded-xl bg-[#1E3A5F] text-[#F8FAFC] text-xs font-semibold">Ver roteiro</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const mapa_da_viagem_dias = {
+  1:{titulo:"Dia 1 · Belém e Ajuda",data:"20 de março",dist:"6,4 km a pé",pontos:[
+    {n:"Torre de Belém",c:"Monumento",e:"Av. Brasília, 1400-038 Lisboa",f:"🗼",nota:"4,7",av:"18.402",t:"09:00",d:"45 min",x:18,y:74,info:"entrada 8€ · ingresso salvo em Documentos"},
+    {n:"Mosteiro dos Jerónimos",c:"Patrimônio UNESCO",e:"Praça do Império, Lisboa",f:"⛪",nota:"4,8",av:"32.115",t:"10:30",d:"1h30",x:33,y:60,info:"fila menor após as 15h"},
+    {n:"Pastéis de Belém",c:"Café histórico",e:"R. de Belém 84, Lisboa",f:"🥧",nota:"4,6",av:"41.870",t:"12:15",d:"40 min",x:47,y:52,info:"2 pastéis + galão ≈ 5,40€"},
+    {n:"MAAT",c:"Museu de arte",e:"Av. Brasília, Central Tejo",f:"🏛️",nota:"4,4",av:"9.336",t:"14:00",d:"1h",x:62,y:66,info:"terraço com vista para o Tejo"},
+    {n:"LX Factory",c:"Bairro criativo",e:"R. Rodrigues de Faria 103",f:"🎨",nota:"4,5",av:"27.540",t:"16:30",d:"2h",x:80,y:40,info:"jantar reservado na Cantina 20:00"}]},
+  2:{titulo:"Dia 2 · Baixa e Chiado",data:"21 de março",dist:"4,1 km a pé",pontos:[
+    {n:"Praça do Comércio",c:"Praça histórica",e:"Terreiro do Paço, Lisboa",f:"🏛️",nota:"4,8",av:"52.190",t:"09:30",d:"40 min",x:24,y:70,info:"café no Martinho da Arcada"},
+    {n:"Elevador de Santa Justa",c:"Mirante",e:"R. do Ouro, Lisboa",f:"🛗",nota:"4,3",av:"22.008",t:"11:00",d:"50 min",x:40,y:52,info:"Lisboa Card evita a fila"},
+    {n:"Time Out Market",c:"Gastronomia",e:"Av. 24 de Julho 49, Lisboa",f:"🍽️",nota:"4,5",av:"38.760",t:"13:00",d:"1h20",x:57,y:64,info:"almoço ≈ 18€ por pessoa"},
+    {n:"Livraria Bertrand",c:"Livraria",e:"R. Garrett 73, Chiado",f:"📚",nota:"4,6",av:"7.912",t:"15:00",d:"30 min",x:70,y:44,info:"a mais antiga do mundo em atividade"},
+    {n:"Miradouro de Santa Catarina",c:"Pôr do sol",e:"R. de Santa Catarina, Lisboa",f:"🌇",nota:"4,7",av:"14.230",t:"18:20",d:"1h",x:84,y:30,info:"chegar 30 min antes do pôr do sol"}]},
+  3:{titulo:"Dia 3 · Alfama e Castelo",data:"22 de março",dist:"3,7 km a pé",pontos:[
+    {n:"Castelo de São Jorge",c:"Castelo",e:"R. de Santa Cruz do Castelo",f:"🏰",nota:"4,7",av:"46.115",t:"09:00",d:"1h40",x:22,y:38,info:"entrada 15€ · comprada no app"},
+    {n:"Sé de Lisboa",c:"Catedral",e:"Largo da Sé, Lisboa",f:"⛪",nota:"4,6",av:"19.480",t:"11:15",d:"40 min",x:38,y:54,info:"eléctrico 28 passa em frente"},
+    {n:"Miradouro Senhora do Monte",c:"Mirante",e:"Largo Monte, Graça",f:"🌄",nota:"4,8",av:"16.905",t:"13:30",d:"45 min",x:56,y:34,info:"melhor vista panorâmica da cidade"},
+    {n:"Tasca do Chico",c:"Casa de fado",e:"R. do Diário de Notícias 39",f:"🎶",nota:"4,4",av:"11.260",t:"20:00",d:"2h",x:74,y:58,info:"reserva confirmada para 2 pessoas"}]}
+};
+const mapa_da_viagem_catalogo = [
+  {n:"Oceanário de Lisboa",c:"Aquário",e:"Esplanada D. Carlos I, Parque das Nações",f:"🐠",nota:"4,7",av:"58.310",d:"2h",info:"bilhete 25€ · fila curta pela manhã"},
+  {n:"Padrão dos Descobrimentos",c:"Monumento",e:"Av. Brasília, Belém",f:"⛵",nota:"4,6",av:"21.740",d:"50 min",info:"mirante no topo por 6€"},
+  {n:"Feira da Ladra",c:"Feira",e:"Campo de Santa Clara, Alfama",f:"🛍️",nota:"4,2",av:"9.115",d:"1h",info:"só terças e sábados"},
+  {n:"Praia de Carcavelos",c:"Praia",e:"Carcavelos, Cascais",f:"🏖️",nota:"4,5",av:"13.402",d:"3h",info:"comboio da Estação do Cais do Sodré"},
+  {n:"Pastelaria Versailles",c:"Café",e:"Av. da República 15A, Lisboa",f:"☕",nota:"4,4",av:"8.870",d:"40 min",info:"salão de 1922, ótimo café da manhã"},
+  {n:"Sintra · Palácio da Pena",c:"Bate-volta",e:"Estrada da Pena, Sintra",f:"🏯",nota:"4,8",av:"64.220",d:"4h",info:"40 min de comboio a partir do Rossio"}
+];
+let mapa_da_viagem_estado = {dia:1, sel:0, novo:null};
+
+function mapa_da_viagem_toast(t){const el=document.getElementById('mv-toast');el.textContent=t;el.classList.remove('hidden');clearTimeout(window.mvT);window.mvT=setTimeout(()=>el.classList.add('hidden'),2200);}
+function mapa_da_viagem_render(){
+  const d=mapa_da_viagem_dias[mapa_da_viagem_estado.dia];
+  document.querySelectorAll('#mv-mapa').length;
+  const pins=document.getElementById('mv-pins');
+  pins.innerHTML=d.pontos.map((p,i)=>`<button class="mv-pin" data-ativo="${i===mapa_da_viagem_estado.sel?1:0}" style="left:${p.x}%;top:${p.y}%" onclick="mapa_da_viagem_sel(${i})">
+    <span class="mv-num">${i+1}</span>
+    <span class="mt-1 px-1.5 py-0.5 rounded bg-white/90 text-[9px] font-semibold text-[#1E3A5F] shadow-sm whitespace-nowrap max-w-[92px] truncate">${p.n}</span></button>`).join('');
+  document.getElementById('mv-rota').setAttribute('points',d.pontos.map(p=>p.x+','+p.y).join(' '));
+  document.getElementById('mv-resumo-titulo').textContent=d.titulo;
+  document.getElementById('mv-resumo-sub').textContent=d.pontos.length+' paradas · '+d.dist+' · '+d.data;
+  document.querySelectorAll('.mv-chip').forEach((c,i)=>c.dataset.on=(i+1===mapa_da_viagem_estado.dia)?'1':'0');
+}
+function mapa_da_viagem_dia(n){mapa_da_viagem_estado.dia=n;mapa_da_viagem_estado.sel=0;mapa_da_viagem_fechar();mapa_da_viagem_render();mapa_da_viagem_toast(mapa_da_viagem_dias[n].titulo);}
+function mapa_da_viagem_abrirCard(p,idx,noRoteiro){
+  document.getElementById('mv-foto').textContent=p.f;
+  document.getElementById('mv-cat').textContent=p.c;
+  document.getElementById('mv-nome').textContent=p.n;
+  document.getElementById('mv-meta').textContent='⭐ '+p.nota+' ('+p.av+') · '+p.d;
+  document.getElementById('mv-end').textContent=p.e;
+  document.getElementById('mv-horario').innerHTML='<span>'+(noRoteiro?'🕘':'✨')+'</span><span>'+(noRoteiro?('Parada '+(idx+1)+' · '+p.t+' · '+p.info):('Sugestão perto de você · '+p.info))+'</span>';
+  const b=document.getElementById('mv-acao');
+  if(noRoteiro){b.textContent='Ver detalhes da parada';b.className='flex-1 py-2.5 rounded-xl bg-[#1E3A5F] text-white text-sm font-semibold active:scale-[.98] transition';}
+  else{b.textContent='Adicionar ao roteiro';b.className='flex-1 py-2.5 rounded-xl bg-[#2563EB] text-white text-sm font-semibold active:scale-[.98] transition';}
+  document.getElementById('mv-card').classList.remove('translate-y-[120%]');
+  document.getElementById('mv-resumo').classList.add('hidden');
+}
+function mapa_da_viagem_sel(i){mapa_da_viagem_estado.sel=i;mapa_da_viagem_estado.novo=null;mapa_da_viagem_render();mapa_da_viagem_abrirCard(mapa_da_viagem_dias[mapa_da_viagem_estado.dia].pontos[i],i,true);}
+function mapa_da_viagem_fechar(){document.getElementById('mv-card').classList.add('translate-y-[120%]');document.getElementById('mv-resumo').classList.remove('hidden');}
+function mapa_da_viagem_acao(){
+  if(mapa_da_viagem_estado.novo){
+    const d=mapa_da_viagem_dias[mapa_da_viagem_estado.dia];const p=mapa_da_viagem_estado.novo;
+    p.x=12+Math.round(Math.random()*70);p.y=26+Math.round(Math.random()*50);p.t='19:30';
+    d.pontos.push(p);mapa_da_viagem_estado.sel=d.pontos.length-1;mapa_da_viagem_estado.novo=null;
+    mapa_da_viagem_render();mapa_da_viagem_abrirCard(p,d.pontos.length-1,true);
+    mapa_da_viagem_toast(p.n+' virou a parada '+d.pontos.length);
+  }else{mostrarTela('detalhes-do-roteiro');}
+}
+function mapa_da_viagem_buscar(v){
+  const box=document.getElementById('mv-sugestoes');const t=v.trim().toLowerCase();
+  if(t.length<1){box.classList.add('hidden');box.innerHTML='';return;}
+  const res=mapa_da_viagem_catalogo.filter(p=>(p.n+' '+p.c+' '+p.e).toLowerCase().includes(t)).slice(0,5);
+  box.classList.remove('hidden');
+  box.innerHTML=res.length?res.map((p,i)=>`<button onclick="mapa_da_viagem_escolher(${mapa_da_viagem_catalogo.indexOf(p)})" class="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-[#F8FAFC] border-b border-[#f1f5f9] last:border-0">
+    <span class="w-8 h-8 rounded-lg bg-[#eef4fd] flex items-center justify-center text-base">${p.f}</span>
+    <span class="min-w-0"><span class="block text-sm font-semibold text-[#1E3A5F] truncate">${p.n}</span>
+    <span class="block text-[11px] text-slate-500 truncate">${p.c} · ${p.e}</span></span>
+    <span class="ml-auto text-[11px] font-semibold text-[#2563EB]">+</span></button>`).join('')
+    :`<p class="px-3 py-3 text-xs text-slate-500">Nenhum local encontrado para "${v}". Tente "Sintra" ou "Oceanário".</p>`;
+}
+function mapa_da_viagem_escolher(i){
+  const p=Object.assign({},mapa_da_viagem_catalogo[i]);
+  mapa_da_viagem_estado.novo=p;mapa_da_viagem_estado.sel=-1;mapa_da_viagem_render();
+  document.getElementById('mv-sugestoes').classList.add('hidden');
+  document.getElementById('mv-busca').value=p.n;
+  mapa_da_viagem_abrirCard(p,0,false);
+}
+function mapa_da_viagem_limpar(){document.getElementById('mv-busca').value='';document.getElementById('mv-sugestoes').classList.add('hidden');mapa_da_viagem_estado.novo=null;mapa_da_viagem_fechar();}
+function mapa_da_viagem_centrar(){mapa_da_viagem_toast('Você está na R. da Prata, 220 m da parada 2');}
+function mapa_da_viagem_noite(){document.getElementById('mv-mapa').classList.toggle('mv-noite');}
+mapa_da_viagem_render();
+</script>
+</section>
+
     <!-- TELAS -->
   </main>
 
